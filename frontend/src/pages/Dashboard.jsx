@@ -4,13 +4,15 @@ import Charts from '../components/Charts';
 import Recommendations from '../components/Recommendations';
 import { FaTrash, FaUser, FaPercent, FaExclamationTriangle, FaTrophy, FaArrowLeft, FaRedo } from 'react-icons/fa';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Dashboard = ({ data, onRecalculate, onBackToHome }) => {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
-    axios.post('http://localhost:5000/calculate', data)
+    axios.post(`${API_URL}/calculate`, data)
       .then(response => {
         setResults(response.data);
         setLoading(false);

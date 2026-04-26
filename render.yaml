@@ -1,0 +1,19 @@
+services:
+  - type: web_service
+    name: waste-footprint-backend
+    env: python
+    branch: master
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python backend/app.py
+
+  - type: static_site
+    name: waste-footprint-frontend
+    env: static
+    branch: master
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    publishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://waste-footprint-backend.onrender.com

@@ -6,11 +6,13 @@ import { FaArrowLeft, FaHome } from 'react-icons/fa';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Results = ({ data, setStep, setShowingLanding }) => {
   const [results, setResults] = useState(null);
 
   useEffect(() => {
-    axios.post('http://localhost:5000/calculate', data)
+    axios.post(`${API_URL}/calculate`, data)
       .then(response => setResults(response.data))
       .catch(error => console.error('Error:', error));
   }, [data]);
