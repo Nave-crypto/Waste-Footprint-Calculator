@@ -58,6 +58,23 @@ A modern, eco-friendly web application for calculating and analyzing personal wa
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
 
+## Render Deployment
+
+This project can be deployed on Render using the backend service.
+
+### Render service settings
+- **Environment:** Python
+- **Root directory:** project root
+- **Build command:** `pip install -r requirements.txt`
+- **Start command:** `python backend/app.py`
+- **Procfile:** included at the project root
+
+### Notes
+- A root `requirements.txt` already points to `backend/requirements.txt`.
+- The backend now uses Render's `PORT` environment variable automatically.
+- No `.env` file currently exists in the repository.
+- If you need environment variables, add them in Render dashboard under **Environment**.
+
 ## API Endpoints
 
 - `GET /` - API health check
