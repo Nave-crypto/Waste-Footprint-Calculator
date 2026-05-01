@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Navbar = ({ onBackToHome }) => {
+const Navbar = ({ user, onBackToHome, onLogin, onHistory, onLogout }) => {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 backdrop-blur-xl bg-white/10 border-b border-white/20 shadow-sm">
+    <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 backdrop-blur-xl bg-slate-950/80 border-b border-white/10 shadow-sm">
       <div className="container mx-auto flex items-center justify-between gap-6">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg flex items-center justify-center text-white text-xl">♻️</div>
@@ -12,25 +12,30 @@ const Navbar = ({ onBackToHome }) => {
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm text-white/80">
-          <a href="#features" className="transition hover:text-white">Features</a>
-          <a href="#product" className="transition hover:text-white">Product</a>
-          <a href="#about" className="transition hover:text-white">About</a>
-          <a href="#reviews" className="transition hover:text-white">Reviews</a>
+        <nav className="hidden md:flex items-center gap-6 text-sm text-slate-200/80">
+          <button onClick={onHistory} className="transition hover:text-white">History</button>
+          {!user && (
+            <button onClick={onLogin} className="transition hover:text-white">Sign In</button>
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
           {onBackToHome && (
             <button
               onClick={onBackToHome}
-              className="text-sm font-medium text-white/90 hover:text-white transition"
+              className="text-sm font-medium text-slate-100 hover:text-white transition"
             >
               Home
             </button>
           )}
-          <button className="hidden md:inline-flex items-center justify-center rounded-full bg-gradient-to-r from-green-400 to-teal-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:scale-[1.02]">
-            Contact
-          </button>
+          {user && (
+            <button
+              onClick={onLogout}
+              className="inline-flex items-center justify-center rounded-full bg-red-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/20 transition hover:scale-[1.02]"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </header>

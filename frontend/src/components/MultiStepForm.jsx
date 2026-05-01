@@ -4,7 +4,7 @@ import { FaUser, FaTrash, FaRecycle, FaLeaf, FaArrowRight, FaArrowLeft, FaCheck 
 const MultiStepForm = ({ onComplete }) => {
   const [step, setStep] = useState(1);
   const [data, setData] = useState({
-    household: { people: 1, location: 'India' },
+    household: { people: '', location: 'India' },
     waste: { food: 0, plastic: 0, paper: 0, glass: 0, hazardous: 0 },
     habits: { recycling: false, composting: false }
   });
@@ -93,7 +93,10 @@ const Step1 = ({ data, updateData, nextStep }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: name === 'people' ? parseInt(value) || 1 : value });
+    setFormData({
+      ...formData,
+      [name]: name === 'people' ? (value === '' ? '' : Math.max(1, parseInt(value) || 1)) : value
+    });
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
@@ -133,9 +136,11 @@ const Step1 = ({ data, updateData, nextStep }) => {
             name="people"
             value={formData.people}
             onChange={handleChange}
+            placeholder="How many people live in your home?"
             min="1"
-            className={`w-full px-4 py-4 rounded-2xl bg-slate-900/80 border ${
-              errors.people ? 'border-red-400 bg-red-50/20 text-red-100' : 'border-slate-700 text-white'
+            step="1"
+            className={`w-full px-4 py-4 rounded-2xl bg-slate-900/90 border ${
+              errors.people ? 'border-red-400 bg-red-50/20 text-red-100' : 'border-slate-600 text-white'
             } focus:outline-none focus:ring-4 focus:ring-emerald-400 transition-all duration-300`}
             required
           />

@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { FaChartBar, FaLeaf, FaLightbulb, FaRecycle } from 'react-icons/fa';
 
-const Home = ({ onStart }) => {
+const Home = ({ onStart, user, onLogin, onHistory }) => {
   return (
     <div className="min-h-screen home-bg relative overflow-hidden text-white">
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-emerald-900/30 to-slate-950/90"></div>
@@ -32,9 +32,21 @@ const Home = ({ onStart }) => {
                 >
                   Start Assessment
                 </button>
-                <button className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition hover:bg-white/15">
-                  Learn More
-                </button>
+                {!user ? (
+                  <button
+                    onClick={onLogin}
+                    className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition hover:bg-white/15"
+                  >
+                    Sign In
+                  </button>
+                ) : (
+                  <button
+                    onClick={onHistory}
+                    className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-8 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition hover:bg-white/15"
+                  >
+                    View History
+                  </button>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8">

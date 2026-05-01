@@ -6,31 +6,40 @@ import { FaTrash, FaUser, FaPercent, FaExclamationTriangle, FaTrophy, FaArrowLef
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-const Dashboard = ({ data, onRecalculate, onBackToHome }) => {
+const Dashboard = ({ data, token, onRecalculate, onBackToHome, onHistory }) => {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     setLoading(true);
-    axios.post(`${API_URL}/calculate`, data)
+    setError('');
+    axios.post(
+      `${API_URL}/calculate`,
+      data,
+      {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined
+      }
+    )
       .then(response => {
         setResults(response.data);
         setLoading(false);
       })
       .catch(error => {
         console.error('Error:', error);
+        setError('Unable to calculate results. Please try again.');
         setLoading(false);
       });
-  }, [data]);
+  }, [data, token]);
 
   if (loading) return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-50 flex items-center justify-center px-4">
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-12 text-center max-w-md w-full">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-green-200 border-t-green-600 mx-auto mb-6"></div>
-        <h3 className="text-2xl font-bold text-gray-800 mb-4">Analyzing Your Impact</h3>
-        <p className="text-gray-600 mb-6">Calculating your waste footprint and generating personalized recommendations...</p>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div className="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full animate-pulse" style={{width: '70%'}}></div>
+    <div className="min-h-screen dashboard-bg flex items-center justify-center px-4">
+      <div className="bg-slate-950/95 backdrop-blur-sm rounded-2xl shadow-2xl p-12 text-center max-w-md w-full border border-white/10">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-slate-700 border-t-emerald-400 mx-auto mb-6"></div>
+        <h3 className="text-2xl font-bold text-white mb-4">Analyzing Your Impact</h3>
+        <p className="text-slate-300 mb-6">Calculating your waste footprint and generating personalized recommendations...</p>
+        <div className="w-full bg-slate-800 rounded-full h-2">
+          <div className="bg-gradient-to-r from-emerald-400 to-blue-500 h-2 rounded-full animate-pulse" style={{width: '70%'}}></div>
         </div>
       </div>
     </div>
@@ -67,7 +76,23 @@ const Dashboard = ({ data, onRecalculate, onBackToHome }) => {
               <p className="text-slate-200/80 text-lg max-w-2xl mx-auto">
                 Here's a comprehensive analysis of your environmental impact with actionable insights.
               </p>
+              {onHistory && (
+                <div className="mt-8 flex justify-center">
+                  <button
+                    onClick={onHistory}
+                    className="rounded-full bg-white/10 border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/15"
+                  >
+                    View Saved History
+                  </button>
+                </div>
+              )}
             </div>
+
+            {error && (
+              <div className="mb-8 rounded-3xl border border-red-500 bg-red-500/10 p-6 text-red-200 text-center">
+                {error}
+              </div>
+            )}
 
             {/* Metrics Cards */}
             <div className="grid md:grid-cols-5 gap-8 mb-12">
